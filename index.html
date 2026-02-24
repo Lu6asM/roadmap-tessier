@@ -85,26 +85,6 @@
   }
   .tech-dot { font-size: 6px; margin-top: 5px; flex-shrink: 0; color: #555; }
 
-  /* Risks */
-  .risks-toggle {
-    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 12px; padding: 14px 20px; cursor: pointer;
-    display: flex; justify-content: space-between; align-items: center; margin-top: 24px;
-  }
-  .risks-toggle.open { border-radius: 12px 12px 0 0; }
-  .risks-label { font-size: 13px; font-weight: 500; color: #999; display: flex; align-items: center; gap: 8px; }
-  .risks-body {
-    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-top: none;
-    border-radius: 0 0 12px 12px; padding: 0 20px;
-    max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
-  }
-  .risks-body.open { max-height: 400px; padding: 12px 20px 16px; }
-  .risk-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .risk-item:last-child { border-bottom: none; }
-  .risk-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-  .risk-label { font-size: 13px; font-weight: 500; color: #CCC; }
-  .risk-detail { font-size: 12px; color: #777; margin-top: 2px; }
-
   .footer { max-width: 720px; margin: 32px auto 0; text-align: center; font-size: 11px; color: #444; }
 </style>
 </head>
@@ -141,10 +121,10 @@ const phases = [
       "Architecture hub-and-spoke MPLS Orange + BVPN 4G",
       "Datacenter Heliaq Paris (TEL-AD01), siège Nantes fibre FTTO 80 Mbps",
       "Scripts PowerShell : monitoring réseau, kill session RDP",
-      "Périmètres : Heliaq = infra datacenter / BG Partners = ERP / Tessier = AD + IT + Power BI"
+      "Périmètres : Heliaq = infra datacenter / BG Partners = ERP / Orange = infra réseau / Tessier = AD + IT + Power BI"
     ],
     deliverables: ["Cartographie SI", "Audit comptes & postes", "Documentation infra"],
-    itParallel: "Résolution incidents multi-sites (Guérande, Vertou, VPN, imprimantes)"
+    itParallel: "Résolution incidents multi-sites (Guérande, Vertou, VPN, imprimantes, maj)"
   },
   {
     id: 2, title: "Approfondissement & Exploration", subtitle: "Audit des rapports & exploration des données",
@@ -210,13 +190,6 @@ const phases = [
     deliverables: ["Accès Power BI structurés", "Documentation utilisateur", "Rapport infra data"],
     itParallel: "Support IT courant (~20%)"
   }
-];
-
-const risks = [
-  { label: "Accès au serveur de test", detail: "Identifiants en attente, nécessaires pour avancer sur l'optimisation", severity: "high" },
-  { label: "Accès base de données en lecture seule", detail: "Limite les possibilités d'optimisation côté serveur", severity: "medium" },
-  { label: "Pas de référent technique en interne", detail: "Le prestataire externe est la seule ressource technique disponible", severity: "medium" },
-  { label: "Décalage missions IT / Data", detail: "Le support IT consomme du temps sur les missions data", severity: "low" }
 ];
 
 const statusConfig = {
