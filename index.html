@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap Power BI & IT — Tessier Électricité</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+    background: #0F1117;
+    color: #E8E6E3;
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .logo {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: linear-gradient(135deg, #C41E3A 0%, #8B0000 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.5px;
+  }
+  .logo-label { font-size: 11px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
+  h1 { font-size: 28px; font-weight: 700; margin: 16px 0 6px; letter-spacing: -0.5px; line-height: 1.2; }
+  .subtitle { font-size: 14px; color: #999; line-height: 1.5; }
+  .header { margin-bottom: 40px; }
+
+  .phase { position: relative; padding-left: 32px; }
+  .phase-line { position: absolute; left: 11px; top: 28px; bottom: -28px; width: 2px; }
+  .phase-node {
+    position: absolute; left: 0; top: 6px; width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; z-index: 1;
+  }
+  .phase-card {
+    border-radius: 12px; padding: 16px 20px; margin-bottom: 16px;
+    cursor: pointer; transition: all 0.2s ease;
+    border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02);
+  }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+  .card-header-left { flex: 1; }
+  .card-header-right { text-align: right; flex-shrink: 0; margin-left: 16px; }
+  .status-badge { font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 500; display: inline-block; }
+  .phase-title { font-size: 17px; font-weight: 600; margin: 4px 0 2px; letter-spacing: -0.3px; }
+  .phase-subtitle { font-size: 13px; color: #777; }
+  .period { font-size: 12px; color: #999; }
+  .weeks { font-size: 11px; color: #555; margin-top: 2px; }
+
+  .card-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .card-body.open { max-height: 800px; }
+  .card-body-inner { padding-top: 16px; margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+
+  .item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 13px; color: #BBB; line-height: 1.5; }
+  .item-dot { font-size: 8px; margin-top: 6px; flex-shrink: 0; }
+
+  .deliverables-box { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px 14px; margin: 16px 0 10px; }
+  .deliverables-label { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+  .deliverables-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 11px; padding: 3px 10px; border-radius: 4px; font-weight: 500; }
+
+  .it-parallel { font-size: 12px; color: #666; font-style: italic; margin-top: 8px; }
+
+  /* Technical sub-accordion */
+  .tech-toggle {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: 12px; padding: 8px 12px; border-radius: 6px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    cursor: pointer; font-size: 11px; color: #666;
+    transition: all 0.2s ease; user-select: none;
+  }
+  .tech-toggle:hover { background: rgba(255,255,255,0.05); color: #999; }
+  .tech-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .tech-body.open { max-height: 400px; }
+  .tech-body-inner { padding: 10px 0 0; }
+  .tech-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    margin-bottom: 6px; font-size: 12px; color: #777; line-height: 1.4;
+  }
+  .tech-dot { font-size: 6px; margin-top: 5px; flex-shrink: 0; color: #555; }
+
+  /* Risks */
+  .risks-toggle {
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px; padding: 14px 20px; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; margin-top: 24px;
+  }
+  .risks-toggle.open { border-radius: 12px 12px 0 0; }
+  .risks-label { font-size: 13px; font-weight: 500; color: #999; display: flex; align-items: center; gap: 8px; }
+  .risks-body {
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-top: none;
+    border-radius: 0 0 12px 12px; padding: 0 20px;
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+  .risks-body.open { max-height: 400px; padding: 12px 20px 16px; }
+  .risk-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .risk-item:last-child { border-bottom: none; }
+  .risk-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .risk-label { font-size: 13px; font-weight: 500; color: #CCC; }
+  .risk-detail { font-size: 12px; color: #777; margin-top: 2px; }
+
+  .footer { max-width: 720px; margin: 32px auto 0; text-align: center; font-size: 11px; color: #444; }
+</style>
+</head>
+<body>
+
+<div class="container header">
+  <div class="logo-row">
+    <div class="logo">T</div>
+    <div><div class="logo-label mono">Tessier Électricité</div></div>
+  </div>
+  <h1>Roadmap Power BI & IT</h1>
+  <p class="subtitle">Alternance M1 Big Data & IA — Lucas Meireles — 2026</p>
+</div>
+
+<div class="container" id="timeline"></div>
+<div class="container" id="risks-section"></div>
+<div class="footer mono">Mis à jour le 24/02/2026 — Rythme 3 semaines entreprise / 1 semaine école</div>
+
+<script>
+const phases = [
+  {
+    id: 1, title: "Découverte", subtitle: "Prise en main de l'environnement",
+    period: "Janvier", weeks: "Semaines 1-3", status: "done", color: "#2D6A4F",
+    items: [
+      "Cartographie complète du réseau (8 agences + datacenter)",
+      "Audit des comptes et postes informatiques",
+      "Compréhension du fonctionnement : ERP Gold System → Power BI",
+      "Réunion Heliaq → qui gère quoi entre les prestataires",
+      "Premiers dépannages IT résolus sur plusieurs sites",
+      "Début de la documentation de l'infrastructure"
+    ],
+    techDetails: [
+      "Audit AD : 90 utilisateurs, 134 ordinateurs, 45 GPOs, 18 OUs",
+      "Architecture hub-and-spoke MPLS Orange + BVPN 4G",
+      "Datacenter Heliaq Paris (TEL-AD01), siège Nantes fibre FTTO 80 Mbps",
+      "Scripts PowerShell : monitoring réseau, kill session RDP",
+      "Périmètres : Heliaq = infra datacenter / BG Partners = ERP / Tessier = AD + IT + Power BI"
+    ],
+    deliverables: ["Cartographie SI", "Audit comptes & postes", "Documentation infra"],
+    itParallel: "Résolution incidents multi-sites (Guérande, Vertou, VPN, imprimantes)"
+  },
+  {
+    id: 2, title: "Approfondissement & Exploration", subtitle: "Audit des rapports & exploration des données",
+    period: "Février — Mars", weeks: "Semaines 4-7", status: "active", color: "#B8860B",
+    items: [
+      "Audit complet des rapports Power BI existants",
+      "Constat : 74% des données chargées sont inutiles",
+      "Erreurs critiques identifiées dans les calculs des rapports",
+      "Exploration directe de la base de données de l'ERP",
+      "Visio avec prestataire Power BI → accès aux outils de test",
+      "Construction d'un référentiel des données disponibles"
+    ],
+    techDetails: [
+      "Analyse de 3 fichiers .pbix : RAPPORT_ADV, CA_TESSIER_V1, COMPTA_JD",
+      "2 838 colonnes chargées, 732 utilisées (74% gaspillage), 140 LocalDateTable auto-générées",
+      "Bug DAX : mesure CA Vente divisée par 100 sans raison",
+      "Bug codes unités : CT/MI/CM = codes conditionnement internes BG Partners, pas des unités physiques",
+      "HeidiSQL lecture seule sur BDD Gold prod (MySQL)",
+      "Serveur tel-appli01 : copie BDD test + Metabase + Gateway Power BI",
+      "Extraction model.bim via Tabular Editor 3, audit croisé model.bim + Report/Layout"
+    ],
+    deliverables: ["Audit Data Model", "Référentiel données", "Accès outils backend"],
+    itParallel: "Remplacement disque PC, licences Microsoft 365, gestion accès Power BI"
+  },
+  {
+    id: 3, title: "Optimisation & Maintenance", subtitle: "Nettoyage des rapports & montée en compétences",
+    period: "Mars — Avril", weeks: "Semaines 8-11", status: "upcoming", color: "#4A6FA5",
+    items: [
+      "Nettoyage des rapports existants (suppression données inutiles)",
+      "Correction des erreurs de calcul dans les rapports",
+      "Amélioration des requêtes de données (passage en SQL)",
+      "Mutualisation : un jeu de données partagé au lieu de dupliquer",
+      "Amélioration des performances (rapports plus rapides et légers)",
+      "Montée en compétences SQL"
+    ],
+    techDetails: [
+      "Suppression des 74% de colonnes inutiles dans Power Query",
+      "Correction mesures DAX (CA /100, conversions unités CT/MI/CM)",
+      "Migration requêtes Power Query M → requêtes SQL natives",
+      "Mise en place de modèles sémantiques partagés (ex-datasets) sur Power BI Service",
+      "Optimisation refresh gateway (tel-appli01, compte informatique@)",
+      "Tests requêtes sur Metabase + HeidiSQL avant déploiement Power BI"
+    ],
+    deliverables: ["Rapports optimisés", "Données mutualisées", "Requêtes SQL documentées"],
+    itParallel: "Support courant (~20%)"
+  },
+  {
+    id: 4, title: "Gouvernance & Évolutions", subtitle: "Fonctionnement continu",
+    period: "Mai +", weeks: "Continu", status: "upcoming", color: "#7B2D8E",
+    items: [
+      "Organisation des accès Power BI (qui voit quoi)",
+      "Création de nouveaux rapports selon les besoins",
+      "Documentation pour les utilisateurs",
+      "Formation des équipes à la consultation des rapports",
+      "Rapport sur l'infrastructure data de Tessier"
+    ],
+    techDetails: [
+      "Gouvernance workspace Power BI Service : rôles Admin/Member/Contributor/Viewer",
+      "Distribution via Apps Power BI vs partage direct selon les profils",
+      "Standardisation des templates de dashboards (backgrounds, branding Tessier)",
+      "Documentation technique : dictionnaire de données, architecture connexions, procédures refresh"
+    ],
+    deliverables: ["Accès Power BI structurés", "Documentation utilisateur", "Rapport infra data"],
+    itParallel: "Support IT courant (~20%)"
+  }
+];
+
+const risks = [
+  { label: "Accès au serveur de test", detail: "Identifiants en attente, nécessaires pour avancer sur l'optimisation", severity: "high" },
+  { label: "Accès base de données en lecture seule", detail: "Limite les possibilités d'optimisation côté serveur", severity: "medium" },
+  { label: "Pas de référent technique en interne", detail: "Le prestataire externe est la seule ressource technique disponible", severity: "medium" },
+  { label: "Décalage missions IT / Data", detail: "Le support IT consomme du temps sur les missions data", severity: "low" }
+];
+
+const statusConfig = {
+  done: { label: "Terminée", icon: "✓", bg: "rgba(45,106,79,0.12)", border: "rgba(45,106,79,0.3)" },
+  active: { label: "En cours", icon: "◉", bg: "rgba(184,134,11,0.12)", border: "rgba(184,134,11,0.3)" },
+  upcoming: { label: "À venir", icon: "○", bg: "rgba(120,120,120,0.08)", border: "rgba(120,120,120,0.2)" }
+};
+const statusBadge = {
+  done: { bg: "rgba(45,106,79,0.2)", color: "#52B788" },
+  active: { bg: "rgba(184,134,11,0.2)", color: "#DAA520" },
+  upcoming: { bg: "rgba(255,255,255,0.05)", color: "#666" }
+};
+const sevColors = { high: "#C41E3A", medium: "#DAA520", low: "#4A6FA5" };
+
+let expandedId = 2;
+let techOpenIds = {};
+let risksOpen = false;
+
+function render() {
+  const tl = document.getElementById("timeline");
+  tl.innerHTML = phases.map((p, i) => {
+    const sc = statusConfig[p.status];
+    const sb = statusBadge[p.status];
+    const isExp = expandedId === p.id;
+    const isTechOpen = techOpenIds[p.id] || false;
+    const nodeStyle = p.status === "upcoming"
+      ? `background:#1E2028;border:2px solid rgba(255,255,255,0.15);color:#666;`
+      : `background:${p.color};border:2px solid ${p.color};color:#fff;`;
+
+    return `
+      <div class="phase">
+        ${i < phases.length - 1 ? `<div class="phase-line" style="background:${p.status === "done" ? p.color : "rgba(255,255,255,0.08)"}"></div>` : ""}
+        <div class="phase-node" style="${nodeStyle}">${sc.icon}</div>
+        <div class="phase-card" style="background:${isExp ? sc.bg : "rgba(255,255,255,0.02)"};border-color:${isExp ? sc.border : "rgba(255,255,255,0.06)"};" onclick="toggle(${p.id})">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+                <span class="mono" style="font-size:11px;color:${p.color};opacity:0.8">PHASE ${p.id}</span>
+                <span class="status-badge" style="background:${sb.bg};color:${sb.color}">${sc.label}</span>
+              </div>
+              <div class="phase-title">${p.title}</div>
+              <div class="phase-subtitle">${p.subtitle}</div>
+            </div>
+            <div class="card-header-right">
+              <div class="period mono">${p.period}</div>
+              <div class="weeks">${p.weeks}</div>
+            </div>
+          </div>
+          <div class="card-body ${isExp ? "open" : ""}">
+            <div class="card-body-inner">
+              ${p.items.map(item => `
+                <div class="item">
+                  <span class="item-dot" style="color:${p.color}">●</span>
+                  ${item}
+                </div>
+              `).join("")}
+
+              <div class="deliverables-box">
+                <div class="deliverables-label mono">Livrables</div>
+                <div class="deliverables-tags">
+                  ${p.deliverables.map(d => `
+                    <span class="tag" style="background:${p.color}22;color:${p.color};border:1px solid ${p.color}33">${d}</span>
+                  `).join("")}
+                </div>
+              </div>
+
+              <div class="it-parallel">IT en parallèle : ${p.itParallel}</div>
+
+              <div class="tech-toggle" onclick="event.stopPropagation();toggleTech(${p.id})">
+                <span style="font-size:9px">${isTechOpen ? "▼" : "▶"}</span>
+                <span>Détails techniques</span>
+              </div>
+              <div class="tech-body ${isTechOpen ? "open" : ""}">
+                <div class="tech-body-inner">
+                  ${p.techDetails.map(t => `
+                    <div class="tech-item">
+                      <span class="tech-dot">●</span>
+                      ${t}
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const rs = document.getElementById("risks-section");
+  rs.innerHTML = `
+    <div class="risks-toggle ${risksOpen ? "open" : ""}" onclick="toggleRisks()">
+      <div class="risks-label"><span>⚠</span> Risques & dépendances</div>
+      <span style="color:#555;font-size:12px">${risksOpen ? "▲" : "▼"}</span>
+    </div>
+    <div class="risks-body ${risksOpen ? "open" : ""}">
+      ${risks.map(r => `
+        <div class="risk-item">
+          <span class="risk-dot" style="background:${sevColors[r.severity]}"></span>
+          <div>
+            <div class="risk-label">${r.label}</div>
+            <div class="risk-detail">${r.detail}</div>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function toggle(id) { expandedId = expandedId === id ? null : id; render(); }
+function toggleTech(id) { techOpenIds[id] = !techOpenIds[id]; render(); }
+function toggleRisks() { risksOpen = !risksOpen; render(); }
+
+render();
+</script>
+</body>
+</html>
